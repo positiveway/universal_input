@@ -7,7 +7,8 @@ use mouse_keyboard_input::VirtualDevice;
 pub type Coord = i32;
 
 #[cfg(target_os = "windows")]
-use enigo::{Enigo, Settings};
+use enigo::{Enigo, Settings, Coordinate, Mouse, Keyboard};
+use enigo::{Axis, Button, Key};
 #[cfg(target_os = "windows")]
 use enigo::Direction::{Click, Press, Release};
 
@@ -43,7 +44,7 @@ impl InputEmulator {
 
     #[cfg(target_os = "windows")]
     pub fn move_mouse(&mut self, x: Coord, y: Coord) -> Result<()>{
-        exec_or_eyre!(self.enigo.move_mouse(x, y))?;
+        exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
         Ok(())
     }
 
@@ -61,41 +62,55 @@ impl InputEmulator {
 
     #[cfg(target_os = "windows")]
     pub fn scroll_x(&mut self, value: Coord) -> Result<()>{
-        exec_or_eyre!(self.enigo.mouse_scroll_x(value))?;
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
     pub fn scroll_y(&mut self, value: Coord) -> Result<()>{
-        exec_or_eyre!(self.enigo.mouse_scroll_y(value))?;
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
     }
 
     #[cfg(target_os = "linux")]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()>{
-        let button = key_code.as_button()?;
+        let button = key_code.convert()?;
         exec_or_eyre!(self.virtual_device.press(button))?;
         Ok(())
     }
 
     #[cfg(target_os = "linux")]
     pub fn release(&mut self, key_code: KeyCode) -> Result<()>{
-        let button = key_code.as_button()?;
+        let button = key_code.convert()?;
         exec_or_eyre!(self.virtual_device.release(button))?;
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()>{
-        let button = key_code.as_button()?;
-        exec_or_eyre!(self.enigo.raw(button, Press))?;
+        match key_code {
+            KeyCode::MOUSE_LEFT => {exec_or_eyre!(self.enigo.button(Button::Left, Press))?}
+            KeyCode::MOUSE_RIGHT => {exec_or_eyre!(self.enigo.button(Button::Right, Press))?}
+            KeyCode::MOUSE_MIDDLE => {exec_or_eyre!(self.enigo.button(Button::Middle, Press))?}
+            _ => {
+                let button = key_code.convert()?;
+                exec_or_eyre!(self.enigo.key(button, Press))?;
+            }
+        };
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
     pub fn release(&mut self, key_code: KeyCode) -> Result<()>{
-        let button = key_code.as_button()?;
-        exec_or_eyre!(self.enigo.raw(button, Release))?;
+        match key_code {
+            KeyCode::MOUSE_LEFT => {exec_or_eyre!(self.enigo.button(Button::Left, Release))?}
+            KeyCode::MOUSE_RIGHT => {exec_or_eyre!(self.enigo.button(Button::Right, Release))?}
+            KeyCode::MOUSE_MIDDLE => {exec_or_eyre!(self.enigo.button(Button::Middle, Release))?}
+            _ => {
+                let button = key_code.convert()?;
+                exec_or_eyre!(self.enigo.key(button, Release))?;
+            }
+        };
         Ok(())
     }
 }

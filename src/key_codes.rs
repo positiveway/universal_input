@@ -7,7 +7,7 @@ use strum_macros::{AsRefStr, Display, EnumIter, EnumString};
 use mouse_keyboard_input::{key_codes, Button};
 
 #[cfg(target_os = "windows")]
-use enigo::{};
+use enigo::{Keyboard, Key};
 
 pub type KeyCodes = Vec<KeyCode>;
 
@@ -242,7 +242,7 @@ pub enum KeyCode {
 
 impl KeyCode {
     #[cfg(target_os = "linux")]
-    pub fn as_button(&self) -> Result<Button> {
+    pub fn convert(&self) -> Result<Button> {
         match self {
             KeyCode::KEY_ESC => Ok(key_codes::KEY_ESC),
             KeyCode::KEY_1 => Ok(key_codes::KEY_1),
@@ -438,15 +438,104 @@ impl KeyCode {
     }
 
     #[cfg(target_os = "windows")]
-    pub fn as_button(&self) -> Result<Button> {
-
+    pub fn convert(&self) -> Result<Key> {
+        match self {
+            KeyCode::KEY_ESC => {Ok(Key::Escape)},
+            KeyCode::KEY_1 => {Ok(Key::Num1)},
+            KeyCode::KEY_2 => {Ok(Key::Num2)},
+            KeyCode::KEY_3 => {Ok(Key::Num3)},
+            KeyCode::KEY_4 => {Ok(Key::Num4)},
+            KeyCode::KEY_5 => {Ok(Key::Num5)},
+            KeyCode::KEY_6 => {Ok(Key::Num6)},
+            KeyCode::KEY_7 => {Ok(Key::Num7)},
+            KeyCode::KEY_8 => {Ok(Key::Num8)},
+            KeyCode::KEY_9 => {Ok(Key::Num9)},
+            KeyCode::KEY_10 => {Ok(Key::Num0)},
+            KeyCode::KEY_MINUS => {Ok(Key::OEMMinus)},
+            KeyCode::KEY_EQUAL => {Ok(Key::OEMNECEqual)},
+            KeyCode::KEY_BACKSPACE => {Ok(Key::Backspace)},
+            KeyCode::KEY_TAB => {Ok(Key::Tab)},
+            KeyCode::KEY_Q => {Ok(Key::Q)},
+            KeyCode::KEY_W => {Ok(Key::W)},
+            KeyCode::KEY_E => {Ok(Key::E)},
+            KeyCode::KEY_R => {Ok(Key::R)},
+            KeyCode::KEY_T => {Ok(Key::T)},
+            KeyCode::KEY_Y => {Ok(Key::Y)},
+            KeyCode::KEY_U => {Ok(Key::U)},
+            KeyCode::KEY_I => {Ok(Key::I)},
+            KeyCode::KEY_O => {Ok(Key::O)},
+            KeyCode::KEY_P => {Ok(Key::P)},
+            KeyCode::KEY_LEFTBRACE => {Ok(Key::Unicode('['))},
+            KeyCode::KEY_RIGHTBRACE => {Ok(Key::Unicode(']'))},
+            KeyCode::KEY_ENTER => {Ok(Key::Return)},
+            KeyCode::KEY_LEFTCTRL => {Ok(Key::LControl)},
+            KeyCode::KEY_A => {Ok(Key::A)},
+            KeyCode::KEY_S => {Ok(Key::S)},
+            KeyCode::KEY_D => {Ok(Key::D)},
+            KeyCode::KEY_F => {Ok(Key::F)},
+            KeyCode::KEY_G => {Ok(Key::G)},
+            KeyCode::KEY_H => {Ok(Key::H)},
+            KeyCode::KEY_J => {Ok(Key::J)},
+            KeyCode::KEY_K => {Ok(Key::K)},
+            KeyCode::KEY_L => {Ok(Key::L)},
+            KeyCode::KEY_SEMICOLON => {Ok(Key::Unicode(';'))},
+            KeyCode::KEY_APOSTROPHE => {Ok(Key::Unicode('\''))},
+            KeyCode::KEY_GRAVE => {Ok(Key::Unicode('`'))},
+            KeyCode::KEY_LEFTSHIFT => {Ok(Key::LShift)},
+            KeyCode::KEY_BACKSLASH => {Ok(Key::Unicode('\\'))},
+            KeyCode::KEY_Z => {Ok(Key::Z)},
+            KeyCode::KEY_X => {Ok(Key::X)},
+            KeyCode::KEY_C => {Ok(Key::C)},
+            KeyCode::KEY_V => {Ok(Key::V)},
+            KeyCode::KEY_B => {Ok(Key::B)},
+            KeyCode::KEY_N => {Ok(Key::N)},
+            KeyCode::KEY_M => {Ok(Key::M)},
+            KeyCode::KEY_COMMA => {Ok(Key::OEMComma)},
+            KeyCode::KEY_DOT => {Ok(Key::OEMPeriod)},
+            KeyCode::KEY_SLASH => {Ok(Key::Unicode('/'))},
+            KeyCode::KEY_RIGHTSHIFT => {Ok(Key::RShift)},
+            KeyCode::KEY_LEFTALT => {Ok(Key::Alt)},
+            KeyCode::KEY_SPACE => {Ok(Key::Space)},
+            KeyCode::KEY_CAPSLOCK => {Ok(Key::CapsLock)},
+            KeyCode::KEY_F1 => {Ok(Key::F1)},
+            KeyCode::KEY_F2 => {Ok(Key::F2)},
+            KeyCode::KEY_F3 => {Ok(Key::F3)},
+            KeyCode::KEY_F4 => {Ok(Key::F4)},
+            KeyCode::KEY_F5 => {Ok(Key::F5)},
+            KeyCode::KEY_F6 => {Ok(Key::F6)},
+            KeyCode::KEY_F7 => {Ok(Key::F7)},
+            KeyCode::KEY_F8 => {Ok(Key::F8)},
+            KeyCode::KEY_F9 => {Ok(Key::F9)},
+            KeyCode::KEY_F10 => {Ok(Key::F10)},
+            KeyCode::KEY_NUMLOCK => {Ok(Key::Numlock)},
+            KeyCode::KEY_KP7 => {Ok(Key::Numpad7)},
+            KeyCode::KEY_KP8 => {Ok(Key::Numpad8)},
+            KeyCode::KEY_KP9 => {Ok(Key::Numpad9)},
+            KeyCode::KEY_KPMINUS => {Ok(Key::OEMMinus)},
+            KeyCode::KEY_KP4 => {Ok(Key::Numpad4)},
+            KeyCode::KEY_KP5 => {Ok(Key::Numpad5)},
+            KeyCode::KEY_KP6 => {Ok(Key::Numpad6)},
+            KeyCode::KEY_KPPLUS => {Ok(Key::OEMPlus)},
+            KeyCode::KEY_KP1 => {Ok(Key::Numpad1)},
+            KeyCode::KEY_KP2 => {Ok(Key::Numpad2)},
+            KeyCode::KEY_KP3 => {Ok(Key::Numpad3)},
+            KeyCode::KEY_KP0 => {Ok(Key::Numpad0)},
+            // KeyCode::KEY_KPDOT => {Ok(Key::)},
+            KeyCode::KEY_F11 => {Ok(Key::F11)},
+            KeyCode::KEY_F12 => {Ok(Key::F12)},
+            KeyCode::KEY_RIGHTCTRL => {Ok(Key::RControl)},
+            KeyCode::KEY_UP => {Ok(Key::UpArrow)},
+            KeyCode::KEY_PAGEUP => {Ok(Key::PageUp)},
+            KeyCode::KEY_LEFT => {Ok(Key::LeftArrow)},
+            KeyCode::KEY_RIGHT => {Ok(Key::RightArrow)},
+            KeyCode::KEY_END => {Ok(Key::End)},
+            KeyCode::KEY_DOWN => {Ok(Key::DownArrow)},
+            KeyCode::KEY_PAGEDOWN => {Ok(Key::PageDown)},
+            KeyCode::KEY_INSERT => {Ok(Key::Insert)},
+            KeyCode::KEY_DELETE => {Ok(Key::Delete)},
+            KeyCode::KEY_LEFTMETA => {Ok(Key::LWin)},
+            KeyCode::KEY_RIGHTMETA => {Ok(Key::RWin)},
+            value => bail!("No such key code: {value}"),
+        }
     }
-}
-
-pub fn key_codes_to_buttons(key_codes: &KeyCodes) -> color_eyre::Result<Vec<Button>> {
-    let mut buttons = vec![];
-    for key_code in key_codes {
-        buttons.push(key_code.as_button()?)
-    }
-    Ok(buttons)
 }
