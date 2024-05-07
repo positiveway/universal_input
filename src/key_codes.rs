@@ -11,7 +11,7 @@ use enigo::{Keyboard, Key};
 
 pub type KeyCodes = Vec<KeyCode>;
 
-#[derive(EnumIter, EnumString, AsRefStr, Display, Eq, Hash, PartialEq, Copy, Clone, Debug, Serialize, Deserialize, )]
+#[derive(PartialOrd, EnumIter, EnumString, AsRefStr, Display, Eq, Hash, PartialEq, Copy, Clone, Debug, Serialize, Deserialize, )]
 pub enum KeyCode {
     None,
     RESET_BTN,
