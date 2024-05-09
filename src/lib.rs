@@ -3,7 +3,7 @@ pub mod input_emulator;
 mod utils;
 
 pub use key_codes::{KeyCode, KeyCodes};
-pub use input_emulator::{Coord, InputEmulator};
+pub use input_emulator::{OS_Input_Coord, InputEmulator};
 
 // pub fn add(left: usize, right: usize) -> usize {
 //     left + right

@@ -4,7 +4,7 @@ use crate::{exec_or_eyre, KeyCode};
 #[cfg(target_os = "linux")]
 use mouse_keyboard_input::VirtualDevice;
 
-pub type Coord = i32;
+pub type OS_Input_Coord = i32;
 
 #[cfg(target_os = "windows")]
 use enigo::{Enigo, Settings, Coordinate, Mouse, Keyboard, Axis, Button, Key};
@@ -37,37 +37,37 @@ impl InputEmulator {
     }
 
     #[cfg(target_os = "linux")]
-    pub fn move_mouse(&mut self, x: Coord, y: Coord) -> Result<()> {
+    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.move_mouse(x, y))?;
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
-    pub fn move_mouse(&mut self, x: Coord, y: Coord) -> Result<()> {
+    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
         Ok(())
     }
 
     #[cfg(target_os = "linux")]
-    pub fn scroll_x(&mut self, value: Coord) -> Result<()> {
+    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.scroll_x(value))?;
         Ok(())
     }
 
     #[cfg(target_os = "linux")]
-    pub fn scroll_y(&mut self, value: Coord) -> Result<()> {
+    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.scroll_y(value))?;
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
-    pub fn scroll_x(&mut self, value: Coord) -> Result<()> {
+    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
         Ok(())
     }
 
     #[cfg(target_os = "windows")]
-    pub fn scroll_y(&mut self, value: Coord) -> Result<()> {
+    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
     }
