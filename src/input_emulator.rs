@@ -37,8 +37,32 @@ impl InputEmulator {
     }
 
     #[cfg(target_os = "linux")]
+    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.move_mouse_x(x))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
+    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.move_mouse_y(y))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
     pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.move_mouse(x, y))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.move_mouse(0, y, Coordinate::Rel))?;
         Ok(())
     }
 
