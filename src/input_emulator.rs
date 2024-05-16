@@ -38,6 +38,19 @@ impl InputEmulator {
 
     #[cfg(target_os = "linux")]
     #[inline]
+    pub fn finish_operation(&mut self) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.synchronize())?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    #[inline]
+    pub fn finish_operation(&mut self) -> Result<()> {
+        Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
+    #[inline]
     pub fn move_mouse_raw_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.move_mouse_raw_x(x))?;
         Ok(())
@@ -54,13 +67,6 @@ impl InputEmulator {
     #[inline]
     pub fn move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.move_mouse_raw(x, y))?;
-        Ok(())
-    }
-
-    #[cfg(target_os = "linux")]
-    #[inline]
-    pub fn finish_operation(&mut self) -> Result<()> {
-        exec_or_eyre!(self.virtual_device.synchronize())?;
         Ok(())
     }
 
@@ -108,12 +114,6 @@ impl InputEmulator {
 
     #[cfg(target_os = "windows")]
     #[inline]
-    pub fn finish_operation(&mut self) -> Result<()> {
-        Ok(())
-    }
-
-    #[cfg(target_os = "windows")]
-    #[inline]
     pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
         Ok(())
@@ -135,6 +135,20 @@ impl InputEmulator {
 
     #[cfg(target_os = "linux")]
     #[inline]
+    pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.scroll_raw_x(value))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
+    #[inline]
+    pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.scroll_raw_y(value))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
+    #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.scroll_x(value))?;
         Ok(())
@@ -144,6 +158,20 @@ impl InputEmulator {
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.virtual_device.scroll_y(value))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    #[inline]
+    pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    #[inline]
+    pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
     }
 
