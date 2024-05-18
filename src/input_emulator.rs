@@ -15,6 +15,8 @@ use enigo::Direction::{Click, Press, Release};
 
 pub struct InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
+    // virtual_mouse: VirtualDevice,
+    // virtual_keyboard: VirtualDevice,
     virtual_device: VirtualDevice,
 
     #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
@@ -24,8 +26,14 @@ pub struct InputEmulator {
 impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     pub fn new() -> Result<Self> {
-        Ok(Self {
-            virtual_device: exec_or_eyre!(VirtualDevice::default())?
+        // let (virtual_mouse, virtual_keyboard) = exec_or_eyre!(VirtualDevice::default())?;
+        // Ok(Self {
+        //     virtual_mouse,
+        //     virtual_keyboard,
+        // })
+
+        Ok(Self{
+            virtual_device: exec_or_eyre!(VirtualDevice::default())?,
         })
     }
 
@@ -38,20 +46,35 @@ impl InputEmulator {
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
-    pub fn finish_operation(&mut self) -> Result<()> {
+    pub fn finish_operation_mouse(&mut self) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.synchronize())?;
         exec_or_eyre!(self.virtual_device.synchronize())?;
         Ok(())
     }
 
+    // #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
+    // #[inline]
+    // pub fn finish_operation_keyboard(&mut self) -> Result<()> {
+    //     exec_or_eyre!(self.virtual_keyboard.synchronize())?;
+    //     Ok(())
+    // }
+
     #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
     #[inline]
-    pub fn finish_operation(&mut self) -> Result<()> {
+    pub fn finish_operation_mouse(&mut self) -> Result<()> {
         Ok(())
     }
+
+    // #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    // #[inline]
+    // pub fn finish_operation_keyboard(&mut self) -> Result<()> {
+    //     Ok(())
+    // }
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse_raw_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse_raw_x(x))?;
         exec_or_eyre!(self.virtual_device.move_mouse_raw_x(x))?;
         Ok(())
     }
@@ -59,6 +82,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse_raw_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse_raw_y(y))?;
         exec_or_eyre!(self.virtual_device.move_mouse_raw_y(y))?;
         Ok(())
     }
@@ -66,6 +90,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse_raw(x, y))?;
         exec_or_eyre!(self.virtual_device.move_mouse_raw(x, y))?;
         Ok(())
     }
@@ -73,6 +98,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse_x(x))?;
         exec_or_eyre!(self.virtual_device.move_mouse_x(x))?;
         Ok(())
     }
@@ -80,6 +106,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse_y(y))?;
         exec_or_eyre!(self.virtual_device.move_mouse_y(y))?;
         Ok(())
     }
@@ -87,6 +114,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.move_mouse(x, y))?;
         exec_or_eyre!(self.virtual_device.move_mouse(x, y))?;
         Ok(())
     }
@@ -136,6 +164,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.scroll_raw_x(value))?;
         exec_or_eyre!(self.virtual_device.scroll_raw_x(value))?;
         Ok(())
     }
@@ -143,6 +172,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.scroll_raw_y(value))?;
         exec_or_eyre!(self.virtual_device.scroll_raw_y(value))?;
         Ok(())
     }
@@ -150,6 +180,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.scroll_x(value))?;
         exec_or_eyre!(self.virtual_device.scroll_x(value))?;
         Ok(())
     }
@@ -157,6 +188,7 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        // exec_or_eyre!(self.virtual_mouse.scroll_y(value))?;
         exec_or_eyre!(self.virtual_device.scroll_y(value))?;
         Ok(())
     }
@@ -192,7 +224,14 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()> {
+        // let virtual_device = match key_code {
+        //     KeyCode::MOUSE_LEFT => &mut self.virtual_mouse,
+        //     KeyCode::MOUSE_RIGHT => &mut self.virtual_mouse,
+        //     KeyCode::MOUSE_MIDDLE => &mut self.virtual_mouse,
+        //     _ => &mut self.virtual_keyboard,
+        // };
         let button = key_code.convert()?;
+        // exec_or_eyre!(virtual_device.press(button))?;
         exec_or_eyre!(self.virtual_device.press(button))?;
         Ok(())
     }
@@ -200,7 +239,14 @@ impl InputEmulator {
     #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     #[inline]
     pub fn release(&mut self, key_code: KeyCode) -> Result<()> {
+        // let virtual_device = match key_code {
+        //     KeyCode::MOUSE_LEFT => &mut self.virtual_mouse,
+        //     KeyCode::MOUSE_RIGHT => &mut self.virtual_mouse,
+        //     KeyCode::MOUSE_MIDDLE => &mut self.virtual_mouse,
+        //     _ => &mut self.virtual_keyboard,
+        // };
         let button = key_code.convert()?;
+        // exec_or_eyre!(virtual_device.release(button))?;
         exec_or_eyre!(self.virtual_device.release(button))?;
         Ok(())
     }
