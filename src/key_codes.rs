@@ -3,10 +3,10 @@ use color_eyre::{Report, Result};
 use serde::{Deserialize, Serialize};
 use strum_macros::{AsRefStr, Display, EnumIter, EnumString};
 
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
 use mouse_keyboard_input::{key_codes, Button};
 
-#[cfg(target_os = "windows")]
+#[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
 use enigo::{Keyboard, Key};
 
 pub type KeyCodes = Vec<KeyCode>;
@@ -241,7 +241,131 @@ pub enum KeyCode {
 
 
 impl KeyCode {
-    #[cfg(target_os = "linux")]
+    #[cfg(all(target_os = "linux", feature = "enigo-always"))]
+    pub fn convert(&self) -> Result<Key> {
+        match self {
+            KeyCode::KEY_ESC => Ok(Key::Other(1)),
+            KeyCode::KEY_1 => Ok(Key::Other(2)),
+            KeyCode::KEY_2 => Ok(Key::Other(3)),
+            KeyCode::KEY_3 => Ok(Key::Other(4)),
+            KeyCode::KEY_4 => Ok(Key::Other(5)),
+            KeyCode::KEY_5 => Ok(Key::Other(6)),
+            KeyCode::KEY_6 => Ok(Key::Other(7)),
+            KeyCode::KEY_7 => Ok(Key::Other(8)),
+            KeyCode::KEY_8 => Ok(Key::Other(9)),
+            KeyCode::KEY_9 => Ok(Key::Other(10)),
+            KeyCode::KEY_10 => Ok(Key::Other(11)),
+            KeyCode::KEY_MINUS => Ok(Key::Other(12)),
+            KeyCode::KEY_EQUAL => Ok(Key::Other(13)),
+            KeyCode::KEY_BACKSPACE => Ok(Key::Other(14)),
+            KeyCode::KEY_TAB => Ok(Key::Other(15)),
+            KeyCode::KEY_Q => Ok(Key::Other(16)),
+            KeyCode::KEY_W => Ok(Key::Other(17)),
+            KeyCode::KEY_E => Ok(Key::Other(18)),
+            KeyCode::KEY_R => Ok(Key::Other(19)),
+            KeyCode::KEY_T => Ok(Key::Other(20)),
+            KeyCode::KEY_Y => Ok(Key::Other(21)),
+            KeyCode::KEY_U => Ok(Key::Other(22)),
+            KeyCode::KEY_I => Ok(Key::Other(23)),
+            KeyCode::KEY_O => Ok(Key::Other(24)),
+            KeyCode::KEY_P => Ok(Key::Other(25)),
+            KeyCode::KEY_LEFTBRACE => Ok(Key::Other(26)),
+            KeyCode::KEY_RIGHTBRACE => Ok(Key::Other(27)),
+            KeyCode::KEY_ENTER => Ok(Key::Other(28)),
+            KeyCode::KEY_LEFTCTRL => Ok(Key::Other(29)),
+            KeyCode::KEY_A => Ok(Key::Other(30)),
+            KeyCode::KEY_S => Ok(Key::Other(31)),
+            KeyCode::KEY_D => Ok(Key::Other(32)),
+            KeyCode::KEY_F => Ok(Key::Other(33)),
+            KeyCode::KEY_G => Ok(Key::Other(34)),
+            KeyCode::KEY_H => Ok(Key::Other(35)),
+            KeyCode::KEY_J => Ok(Key::Other(36)),
+            KeyCode::KEY_K => Ok(Key::Other(37)),
+            KeyCode::KEY_L => Ok(Key::Other(38)),
+            KeyCode::KEY_SEMICOLON => Ok(Key::Other(39)),
+            KeyCode::KEY_APOSTROPHE => Ok(Key::Other(40)),
+            KeyCode::KEY_GRAVE => Ok(Key::Other(41)),
+            KeyCode::KEY_LEFTSHIFT => Ok(Key::Other(42)),
+            KeyCode::KEY_BACKSLASH => Ok(Key::Other(43)),
+            KeyCode::KEY_Z => Ok(Key::Other(44)),
+            KeyCode::KEY_X => Ok(Key::Other(45)),
+            KeyCode::KEY_C => Ok(Key::Other(46)),
+            KeyCode::KEY_V => Ok(Key::Other(47)),
+            KeyCode::KEY_B => Ok(Key::Other(48)),
+            KeyCode::KEY_N => Ok(Key::Other(49)),
+            KeyCode::KEY_M => Ok(Key::Other(50)),
+            KeyCode::KEY_COMMA => Ok(Key::Other(51)),
+            KeyCode::KEY_DOT => Ok(Key::Other(52)),
+            KeyCode::KEY_SLASH => Ok(Key::Other(53)),
+            KeyCode::KEY_RIGHTSHIFT => Ok(Key::Other(54)),
+            KeyCode::KEY_KPASTERISK => Ok(Key::Other(55)),
+            KeyCode::KEY_LEFTALT => Ok(Key::Other(56)),
+            KeyCode::KEY_SPACE => Ok(Key::Other(57)),
+            KeyCode::KEY_CAPSLOCK => Ok(Key::Other(58)),
+            KeyCode::KEY_F1 => Ok(Key::Other(59)),
+            KeyCode::KEY_F2 => Ok(Key::Other(60)),
+            KeyCode::KEY_F3 => Ok(Key::Other(61)),
+            KeyCode::KEY_F4 => Ok(Key::Other(62)),
+            KeyCode::KEY_F5 => Ok(Key::Other(63)),
+            KeyCode::KEY_F6 => Ok(Key::Other(64)),
+            KeyCode::KEY_F7 => Ok(Key::Other(65)),
+            KeyCode::KEY_F8 => Ok(Key::Other(66)),
+            KeyCode::KEY_F9 => Ok(Key::Other(67)),
+            KeyCode::KEY_F10 => Ok(Key::Other(68)),
+            KeyCode::KEY_NUMLOCK => Ok(Key::Other(69)),
+            KeyCode::KEY_SCROLLLOCK => Ok(Key::Other(70)),
+            KeyCode::KEY_KP7 => Ok(Key::Other(71)),
+            KeyCode::KEY_KP8 => Ok(Key::Other(72)),
+            KeyCode::KEY_KP9 => Ok(Key::Other(73)),
+            KeyCode::KEY_KPMINUS => Ok(Key::Other(74)),
+            KeyCode::KEY_KP4 => Ok(Key::Other(75)),
+            KeyCode::KEY_KP5 => Ok(Key::Other(76)),
+            KeyCode::KEY_KP6 => Ok(Key::Other(77)),
+            KeyCode::KEY_KPPLUS => Ok(Key::Other(78)),
+            KeyCode::KEY_KP1 => Ok(Key::Other(79)),
+            KeyCode::KEY_KP2 => Ok(Key::Other(80)),
+            KeyCode::KEY_KP3 => Ok(Key::Other(81)),
+            KeyCode::KEY_KP0 => Ok(Key::Other(82)),
+            KeyCode::KEY_KPDOT => Ok(Key::Other(83)),
+
+            KeyCode::KEY_F11 => Ok(Key::Other(87)),
+            KeyCode::KEY_F12 => Ok(Key::Other(88)),
+
+            KeyCode::KEY_KPJPCOMMA => Ok(Key::Other(95)),
+            KeyCode::KEY_KPENTER => Ok(Key::Other(96)),
+            KeyCode::KEY_RIGHTCTRL => Ok(Key::Other(97)),
+            KeyCode::KEY_KPSLASH => Ok(Key::Other(98)),
+            KeyCode::KEY_SYSRQ => Ok(Key::Other(99)),
+            KeyCode::KEY_RIGHTALT => Ok(Key::Other(100)),
+            KeyCode::KEY_LINEFEED => Ok(Key::Other(101)),
+            KeyCode::KEY_HOME => Ok(Key::Other(102)),
+            KeyCode::KEY_UP => Ok(Key::Other(103)),
+            KeyCode::KEY_PAGEUP => Ok(Key::Other(104)),
+            KeyCode::KEY_LEFT => Ok(Key::Other(105)),
+            KeyCode::KEY_RIGHT => Ok(Key::Other(106)),
+            KeyCode::KEY_END => Ok(Key::Other(107)),
+            KeyCode::KEY_DOWN => Ok(Key::Other(108)),
+            KeyCode::KEY_PAGEDOWN => Ok(Key::Other(109)),
+            KeyCode::KEY_INSERT => Ok(Key::Other(110)),
+            KeyCode::KEY_DELETE => Ok(Key::Other(111)),
+            KeyCode::KEY_MACRO => Ok(Key::Other(112)),
+            KeyCode::KEY_MUTE => Ok(Key::Other(113)),
+            KeyCode::KEY_VOLUMEDOWN => Ok(Key::Other(114)),
+            KeyCode::KEY_VOLUMEUP => Ok(Key::Other(115)),
+            KeyCode::KEY_POWER => Ok(Key::Other(116)),
+            KeyCode::KEY_KPEQUAL => Ok(Key::Other(117)),
+            KeyCode::KEY_KPPLUSMINUS => Ok(Key::Other(118)),
+            KeyCode::KEY_PAUSE => Ok(Key::Other(119)),
+            KeyCode::KEY_SCALE => Ok(Key::Other(120)),
+
+            KeyCode::KEY_LEFTMETA => Ok(Key::Other(125)),
+            KeyCode::KEY_RIGHTMETA => Ok(Key::Other(126)),
+            KeyCode::KEY_COMPOSE => Ok(Key::Other(127)),
+            value => bail!("No such key code: {value}"),
+        }
+    }
+    
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always")))]
     pub fn convert(&self) -> Result<Button> {
         match self {
             KeyCode::KEY_ESC => Ok(key_codes::KEY_ESC),
