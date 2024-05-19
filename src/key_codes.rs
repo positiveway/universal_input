@@ -9,10 +9,10 @@ use mouse_keyboard_input::{key_codes};
 #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
 use mouse_keyboard_input::{Button};
 
-#[cfg(all(target_os = "linux", feature = "use-tfc"))]
+#[cfg(feature = "use-tfc")]
 use tfc::{Key};
 
-#[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+#[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
 use enigo::{Keyboard, Key};
 
 pub type KeyCodes = Vec<KeyCode>;
@@ -631,7 +631,7 @@ impl KeyCode {
         }
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     pub fn convert(&self) -> Result<Key> {
         match self {
             KeyCode::KEY_ESC => Ok(Key::Escape),
@@ -741,7 +741,7 @@ impl KeyCode {
         }
     }
 
-    #[cfg(target_os = "windows")]
+    #[cfg(all(not(feature="use-tfc"), target_os = "windows"))]
     pub fn convert(&self) -> Result<Key> {
         match self {
             KeyCode::KEY_ESC => {Ok(Key::Escape)},

@@ -6,13 +6,13 @@ pub type OS_Input_Coord = i32;
 #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
 use mouse_keyboard_input::VirtualDevice;
 
-#[cfg(all(target_os = "linux", feature = "use-tfc"))]
+#[cfg(feature = "use-tfc")]
 use tfc::{Context, Error, traits::*, MouseButton};
 
-#[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+#[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
 use enigo::{Enigo, Settings, Coordinate, Mouse, Keyboard, Axis, Button, Key};
 
-#[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+#[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
 use enigo::Direction::{Click, Press, Release};
 
 
@@ -22,10 +22,10 @@ pub struct InputEmulator {
     // virtual_keyboard: VirtualDevice,
     virtual_device: VirtualDevice,
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     ctx: Context,
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     enigo: Enigo,
 }
 
@@ -43,14 +43,14 @@ impl InputEmulator {
         })
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     pub fn new() -> Result<Self> {
         Ok(Self{
             ctx: Context::new()?,
         })
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     pub fn new() -> Result<Self> {
         Ok(Self {
             enigo: exec_or_eyre!(Enigo::new(&Settings::default()))?
@@ -65,7 +65,7 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn finish_operation_mouse(&mut self) -> Result<()> {
         Ok(())
@@ -78,13 +78,13 @@ impl InputEmulator {
     //     Ok(())
     // }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn finish_operation_mouse(&mut self) -> Result<()> {
         Ok(())
     }
 
-    // #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    // #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     // #[inline]
     // pub fn finish_operation_keyboard(&mut self) -> Result<()> {
     //     Ok(())
@@ -138,70 +138,70 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn move_mouse_raw_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_move_rel(x, 0))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn move_mouse_raw_y(&mut self, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_move_rel(0, -y))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_move_rel(x, -y))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_move_rel(x, -y))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse_raw_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse_raw_y(&mut self, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(0, y, Coordinate::Rel))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(0, y, Coordinate::Rel))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
@@ -240,56 +240,56 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_scroll(value, 0))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_scroll(0, -value))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_scroll(value, 0))?;
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.ctx.mouse_scroll(0, -value))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
@@ -326,7 +326,7 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()> {
         match key_code {
@@ -341,7 +341,7 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(all(target_os = "linux", feature = "use-tfc"))]
+    #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn release(&mut self, key_code: KeyCode) -> Result<()> {
         match key_code {
@@ -356,7 +356,7 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()> {
         match key_code {
@@ -371,7 +371,7 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(any(target_os = "windows", all(target_os = "linux", feature = "enigo-always")))]
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
     #[inline]
     pub fn release(&mut self, key_code: KeyCode) -> Result<()> {
         match key_code {
