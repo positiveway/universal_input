@@ -4,7 +4,7 @@ use crate::{exec_or_eyre, KeyCode};
 pub type OS_Input_Coord = i32;
 
 #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
-use mouse_keyboard_input::VirtualDevice;
+use mouse_keyboard_input::{VirtualDevice, EventParams};
 
 #[cfg(feature = "use-tfc")]
 use tfc::{Context, Error, traits::*, MouseButton};
@@ -65,6 +65,13 @@ impl InputEmulator {
         Ok(())
     }
 
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn write_buffer(&mut self, buffer: Vec<EventParams>) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.write_batch(buffer))?;
+        Ok(())
+    }
+
     #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn finish_operation_mouse(&mut self) -> Result<()> {
@@ -112,6 +119,24 @@ impl InputEmulator {
         // exec_or_eyre!(self.virtual_mouse.move_mouse_raw(x, y))?;
         exec_or_eyre!(self.virtual_device.move_mouse_raw(x, y))?;
         Ok(())
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_move_mouse_x(&mut self, x: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_move_mouse_x(x)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_move_mouse_y(&mut self, y: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_move_mouse_y(y)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_move_mouse(x, y)
     }
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
@@ -226,6 +251,18 @@ impl InputEmulator {
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
     #[inline]
+    pub fn buffered_scroll_x(&mut self, x: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_scroll_x(x)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_scroll_y(&mut self, y: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_scroll_y(y)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
         // exec_or_eyre!(self.virtual_mouse.scroll_x(value))?;
         exec_or_eyre!(self.virtual_device.scroll_x(value))?;
@@ -294,6 +331,20 @@ impl InputEmulator {
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
         exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_press(&mut self, key_code: KeyCode) -> Result<Vec<EventParams>> {
+        let button = key_code.convert()?;
+        Ok(self.virtual_device.buffered_press(button))
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_release(&mut self, key_code: KeyCode) -> Result<Vec<EventParams>> {
+        let button = key_code.convert()?;
+        Ok(self.virtual_device.buffered_release(button))
     }
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
