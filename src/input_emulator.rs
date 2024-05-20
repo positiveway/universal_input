@@ -141,6 +141,19 @@ impl InputEmulator {
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
     #[inline]
+    pub fn buffered_gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_gradual_move_mouse(x, y)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn gradual_move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.gradual_move_mouse_raw(x, y))?;
+        Ok(())
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
     pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
         // exec_or_eyre!(self.virtual_mouse.move_mouse_x(x))?;
         exec_or_eyre!(self.virtual_device.move_mouse_x(x))?;
@@ -259,6 +272,19 @@ impl InputEmulator {
     #[inline]
     pub fn buffered_scroll_y(&mut self, y: OS_Input_Coord) -> Vec<EventParams> {
         self.virtual_device.buffered_scroll_y(y)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn buffered_gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
+        self.virtual_device.buffered_gradual_scroll(x, y)
+    }
+
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
+    #[inline]
+    pub fn gradual_scroll_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.virtual_device.gradual_scroll_raw(x, y))?;
+        Ok(())
     }
 
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc")))]
