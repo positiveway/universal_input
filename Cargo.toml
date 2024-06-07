@@ -4,11 +4,11 @@ version = "0.2.0"
 edition = "2021"
 
 [features]
-use-mki = []
-mki-separate = []
-use-hidg = ["dep:hidg"]
-use-enigo = ["dep:enigo"]
-use-tfc = ["dep:tfc"]
+use_mki = []
+mki_separate = []
+use_hidg = ["dep:hidg"]
+use_enigo = ["dep:enigo"]
+use_tfc = ["dep:tfc"]
 
 [dependencies]
 color-eyre = "0.6"

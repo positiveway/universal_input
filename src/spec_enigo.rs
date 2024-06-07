@@ -2,19 +2,19 @@ use color_eyre::eyre::bail;
 use color_eyre::{Report, Result};
 use crate::{exec_or_eyre, KeyCode, OS_Input_Coord};
 
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 use enigo::{Enigo, Settings, Coordinate, Mouse, Keyboard, Axis, Button, Key};
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 use enigo::Direction::{Click, Press, Release};
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 use mouse_keyboard_input::key_codes;
 
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 pub struct InputEmulator {
     enigo: Enigo,
 }
 
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 impl InputEmulator {
     pub fn new() -> Result<Self> {
         Ok(Self {
@@ -81,7 +81,7 @@ impl InputEmulator {
     }
 }
 
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 impl KeyCode {
     #[cfg(target_os = "linux")]
     pub fn convert(&self) -> Result<Key> {

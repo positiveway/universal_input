@@ -2,15 +2,15 @@ use color_eyre::eyre::bail;
 use color_eyre::{Report, Result};
 use crate::{exec_or_eyre, KeyCode, OS_Input_Coord};
 
-#[cfg(feature = "use-tfc")]
+#[cfg(feature = "use_tfc")]
 use tfc::{Context, Error, traits::*, MouseButton, Key};
 
-#[cfg(feature = "use-tfc")]
+#[cfg(feature = "use_tfc")]
 pub struct InputEmulator {
     ctx: Context,
 }
 
-#[cfg(feature = "use-tfc")]
+#[cfg(feature = "use_tfc")]
 impl InputEmulator {
     pub fn new() -> Result<Self> {
         Ok(Self{
@@ -77,7 +77,7 @@ impl InputEmulator {
     }
 }
 
-#[cfg(feature = "use-tfc")]
+#[cfg(feature = "use_tfc")]
 impl KeyCode {
     pub fn convert(&self) -> Result<Key> {
         let result = match self {

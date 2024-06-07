@@ -2,29 +2,29 @@ use color_eyre::eyre::bail;
 use color_eyre::{Report, Result};
 use crate::{exec_or_eyre, KeyCode, OS_Input_Coord};
 
-#[cfg(feature = "use-mki")]
+#[cfg(feature = "use_mki")]
 use mouse_keyboard_input::{EventParams, key_codes, VirtualDevice, Button};
 
-#[cfg(feature = "use-mki")]
+#[cfg(feature = "use_mki")]
 pub struct InputEmulator {
-    #[cfg(not(feature = "mki-separate"))]
+    #[cfg(not(feature = "mki_separate"))]
     pub virtual_device: VirtualDevice,
 
-    #[cfg(feature = "mki-separate")]
+    #[cfg(feature = "mki_separate")]
     virtual_mouse: VirtualDevice,
-    #[cfg(feature = "mki-separate")]
+    #[cfg(feature = "mki_separate")]
     virtual_keyboard: VirtualDevice,
 }
 
-#[cfg(feature = "use-mki")]
+#[cfg(feature = "use_mki")]
 impl InputEmulator {
     pub fn new() -> Result<Self> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             Ok(Self{
                 virtual_device: exec_or_eyre!(VirtualDevice::default())?,
             })
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             let (virtual_mouse, virtual_keyboard) = exec_or_eyre!(VirtualDevice::default_separate())?;
             Ok(Self {
                 virtual_mouse,
@@ -37,10 +37,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn finish_operation_mouse(&mut self) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.synchronize())?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.synchronize())?;
         }
         Ok(())
@@ -48,10 +48,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn finish_operation_keyboard(&mut self) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.synchronize())?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_keyboard.synchronize())?;
             
         }
@@ -60,10 +60,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn write_buffer(&mut self, buffer: &[EventParams]) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.write_batch(buffer))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             // FIXME
             exec_or_eyre!(self.virtual_mouse.write_batch(buffer))?;
         }
@@ -72,10 +72,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse_raw_x(&mut self, x: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse_raw_x(x))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse_raw_x(x))?;
         }
         Ok(())
@@ -83,10 +83,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse_raw_y(&mut self, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse_raw_y(y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse_raw_y(y))?;
         }
         Ok(())
@@ -94,10 +94,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse_raw(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse_raw(x, y))?;
         }
         Ok(())
@@ -105,50 +105,50 @@ impl InputEmulator {
 
     #[inline]
     pub fn buffered_move_mouse_x(&mut self, x: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_move_mouse_x(x)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_move_mouse_x(x)
         }
     }
 
     #[inline]
     pub fn buffered_move_mouse_y(&mut self, y: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_move_mouse_y(y)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_move_mouse_y(y)
         }
     }
 
     #[inline]
     pub fn buffered_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_move_mouse(x, y)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_move_mouse(x, y)
         }
     }
 
     #[inline]
     pub fn buffered_gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_gradual_move_mouse(x, y)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_gradual_move_mouse(x, y)
         }
     }
 
     #[inline]
     pub fn gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.gradual_move_mouse(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.gradual_move_mouse(x, y))?;
         }
         Ok(())
@@ -156,10 +156,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn gradual_move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.gradual_move_mouse_raw(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.gradual_move_mouse_raw(x, y))?;
         }
         Ok(())
@@ -167,10 +167,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn scroll_raw_x(&mut self, value: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.scroll_raw_x(value))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.scroll_raw_x(value))?;
         }
         Ok(())
@@ -178,10 +178,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn scroll_raw_y(&mut self, value: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.scroll_raw_y(value))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.scroll_raw_y(value))?;
         }
         Ok(())
@@ -189,40 +189,40 @@ impl InputEmulator {
 
     #[inline]
     pub fn buffered_scroll_x(&mut self, x: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_scroll_x(x)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_scroll_x(x)
         }
     }
 
     #[inline]
     pub fn buffered_scroll_y(&mut self, y: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_scroll_y(y)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_scroll_y(y)
         }
     }
 
     #[inline]
     pub fn buffered_gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Vec<EventParams> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             self.virtual_device.buffered_gradual_scroll(x, y)
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             self.virtual_mouse.buffered_gradual_scroll(x, y)
         }
     }
 
     #[inline]
     pub fn gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.gradual_scroll(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.gradual_scroll(x, y))?;
         }
         Ok(())
@@ -230,10 +230,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn gradual_scroll_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.gradual_scroll_raw(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.gradual_scroll_raw(x, y))?;
         }
         Ok(())
@@ -242,10 +242,10 @@ impl InputEmulator {
     #[inline]
     pub fn buffered_press(&mut self, key_code: KeyCode) -> Result<Vec<EventParams>> {
         let button = key_code.convert()?;
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             Ok(self.virtual_device.buffered_press(button))
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             Ok(self.virtual_keyboard.buffered_press(button))
         }
     }
@@ -253,10 +253,10 @@ impl InputEmulator {
     #[inline]
     pub fn buffered_release(&mut self, key_code: KeyCode) -> Result<Vec<EventParams>> {
         let button = key_code.convert()?;
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             Ok(self.virtual_device.buffered_release(button))
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             Ok(self.virtual_keyboard.buffered_release(button))
         }
     }
@@ -265,10 +265,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse_x(x))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse_x(x))?;
         }
         Ok(())
@@ -276,10 +276,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse_y(y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse_y(y))?;
         }
         Ok(())
@@ -287,10 +287,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.move_mouse(x, y))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.move_mouse(x, y))?;
         }
         Ok(())
@@ -298,10 +298,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.scroll_x(value))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.scroll_x(value))?;
         }
         Ok(())
@@ -309,10 +309,10 @@ impl InputEmulator {
 
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.scroll_y(value))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             exec_or_eyre!(self.virtual_mouse.scroll_y(value))?;
         }
         Ok(())
@@ -322,10 +322,10 @@ impl InputEmulator {
     pub fn press(&mut self, key_code: KeyCode) -> Result<()> {
         let button = key_code.convert()?;
         
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.press(button))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             let virtual_device = match key_code {
                 KeyCode::MOUSE_LEFT => &mut self.virtual_mouse,
                 KeyCode::MOUSE_RIGHT => &mut self.virtual_mouse,
@@ -341,10 +341,10 @@ impl InputEmulator {
     pub fn release(&mut self, key_code: KeyCode) -> Result<()> {
         let button = key_code.convert()?;
         
-        #[cfg(not(feature = "mki-separate"))]{
+        #[cfg(not(feature = "mki_separate"))]{
             exec_or_eyre!(self.virtual_device.release(button))?;
         }
-        #[cfg(feature = "mki-separate")]{
+        #[cfg(feature = "mki_separate")]{
             let virtual_device = match key_code {
                 KeyCode::MOUSE_LEFT => &mut self.virtual_mouse,
                 KeyCode::MOUSE_RIGHT => &mut self.virtual_mouse,
@@ -357,7 +357,7 @@ impl InputEmulator {
     }
 }
 
-#[cfg(feature = "use-mki")]
+#[cfg(feature = "use_mki")]
 impl KeyCode {
     pub fn convert(&self) -> Result<Button> {
         let result = match self {

@@ -11,16 +11,16 @@ pub type OS_Input_Coord = i32;
 pub use key_codes::{KeyCode, KeyCodes};
 pub use crate::stubs::*;
 
-#[cfg(feature = "use-mki")]
+#[cfg(feature = "use_mki")]
 pub use crate::spec_mki::*;
 
-#[cfg(feature = "use-tfc")]
+#[cfg(feature = "use_tfc")]
 pub use crate::spec_tfc::*;
 
-#[cfg(feature = "use-enigo")]
+#[cfg(feature = "use_enigo")]
 pub use crate::spec_enigo::*;
 
-#[cfg(feature = "use-hidg")]
+#[cfg(feature = "use_hidg")]
 pub use crate::spec_hidg::*;
 
 

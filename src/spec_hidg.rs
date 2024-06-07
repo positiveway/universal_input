@@ -2,10 +2,10 @@ use color_eyre::eyre::bail;
 use color_eyre::{Report, Result};
 use crate::{exec_or_eyre, KeyCode, OS_Input_Coord};
 
-#[cfg(feature = "use-hidg")]
+#[cfg(feature = "use_hidg")]
 use hidg::{Class, Device, Keyboard, Key, Led, StateChange, Button, Mouse, ValueChange, KeyboardInput, MouseInput};
 
-#[cfg(feature = "use-hidg")]
+#[cfg(feature = "use_hidg")]
 pub struct InputEmulator {
     virtual_keyboard: Device<Keyboard>,
     virtual_mouse: Device<Mouse>,
@@ -13,7 +13,7 @@ pub struct InputEmulator {
     mouse_input: MouseInput,
 }
 
-#[cfg(feature = "use-hidg")]
+#[cfg(feature = "use_hidg")]
 impl InputEmulator {
     pub fn new() -> Result<Self> {
         Ok(Self{
@@ -135,7 +135,7 @@ impl InputEmulator {
     }
 }
 
-#[cfg(feature = "use-hidg")]
+#[cfg(feature = "use_hidg")]
 impl KeyCode {
     pub fn convert(&self) -> Result<Key> {
         let result = match self {
