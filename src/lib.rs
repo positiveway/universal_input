@@ -1,11 +1,32 @@
 pub mod key_codes;
-pub mod input_emulator;
 mod utils;
+mod spec_mki;
+mod spec_tfc;
+mod stubs;
+mod spec_enigo;
+mod spec_hidg;
+
+pub type OS_Input_Coord = i32;
 
 pub use key_codes::{KeyCode, KeyCodes};
-pub use input_emulator::{OS_Input_Coord, InputEmulator};
+// pub use stubs::EventParams;
+pub use crate::stubs::*;
 
-pub use mouse_keyboard_input::{EventParams};
+#[cfg(feature = "use-mki")]
+pub use crate::spec_mki::*;
+
+#[cfg(feature = "use-tfc")]
+pub use crate::spec_tfc::*;
+
+#[cfg(feature = "use-enigo")]
+pub use crate::spec_enigo::*;
+
+#[cfg(feature = "use-hidg")]
+pub use crate::spec_hidg::*;
+
+// #[cfg(not(feature = "use-mki"))]
+// pub use crate::stubs::*;
+
 
 // pub fn add(left: usize, right: usize) -> usize {
 //     left + right
