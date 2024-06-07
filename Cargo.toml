@@ -21,10 +21,10 @@ tfc = { version = "0.7", optional = true }
 hidg = { version = "0.2", optional = true }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-enigo = { version = "0.2"}
-#enigo = { version = "0.2", optional = true }
+enigo = { version = "0.2", optional = true }
+
 [target.'cfg(target_os = "linux")'.dependencies]
-mouse-keyboard-input = { git = "https://github.com/positiveway/mouse-keyboard-input", branch = "main"}
-#mouse-keyboard-input = { path = "/home/user/RustroverProjects/mouse-keyboard-input" }
 enigo = { version = "0.2", features = ["wayland"], optional = true }
 
+mouse-keyboard-input = { git = "https://github.com/positiveway/mouse-keyboard-input", branch = "main"}
+#mouse-keyboard-input = { path = "/home/user/RustroverProjects/mouse-keyboard-input" }
