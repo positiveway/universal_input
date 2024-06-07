@@ -34,6 +34,14 @@ impl InputEmulator {
         exec_or_eyre!(self.virtual_device.synchronize())?;
         Ok(())
     }
+
+    #[inline]
+    pub fn finish_operation_keyboard(&mut self) -> Result<()> {
+        // exec_or_eyre!(self.virtual_keyboard.synchronize())?;
+        exec_or_eyre!(self.virtual_device.synchronize())?;
+        Ok(())
+    }
+
     #[inline]
     pub fn write_buffer(&mut self, buffer: Vec<EventParams>) -> Result<()> {
         exec_or_eyre!(self.virtual_device.write_batch(buffer))?;
