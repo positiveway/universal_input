@@ -43,7 +43,7 @@ impl InputEmulator {
     }
 
     #[inline]
-    pub fn write_buffer(&mut self, buffer: Vec<EventParams>) -> Result<()> {
+    pub fn write_buffer(&mut self, buffer: &[EventParams]) -> Result<()> {
         exec_or_eyre!(self.virtual_device.write_batch(buffer))?;
         Ok(())
     }

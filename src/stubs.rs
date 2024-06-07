@@ -22,7 +22,7 @@ impl InputEmulator {
 
     #[cfg(not(feature = "use-mki"))]
     #[inline]
-    pub fn write_buffer(&mut self, buffer: Vec<EventParams>) -> Result<()> {
+    pub fn write_buffer(&mut self, buffer: &[EventParams]) -> Result<()> {
         Ok(())
     }
 
