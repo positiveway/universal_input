@@ -9,7 +9,6 @@ mod spec_hidg;
 pub type OS_Input_Coord = i32;
 
 pub use key_codes::{KeyCode, KeyCodes};
-// pub use stubs::EventParams;
 pub use crate::stubs::*;
 
 #[cfg(feature = "use-mki")]
@@ -23,9 +22,6 @@ pub use crate::spec_enigo::*;
 
 #[cfg(feature = "use-hidg")]
 pub use crate::spec_hidg::*;
-
-// #[cfg(not(feature = "use-mki"))]
-// pub use crate::stubs::*;
 
 
 // pub fn add(left: usize, right: usize) -> usize {
