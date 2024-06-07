@@ -407,21 +407,7 @@ impl InputEmulator {
 
     // LIB SPECIFIC
 
-    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc"), not(feature = "use-hidg")))]
-    #[inline]
-    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
-        // exec_or_eyre!(self.virtual_mouse.scroll_x(value))?;
-        exec_or_eyre!(self.virtual_device.scroll_x(value))?;
-        Ok(())
-    }
-
-    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc"), not(feature = "use-hidg")))]
-    #[inline]
-    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
-        // exec_or_eyre!(self.virtual_mouse.scroll_y(value))?;
-        exec_or_eyre!(self.virtual_device.scroll_y(value))?;
-        Ok(())
-    }
+    // mouse-keyboard-input
     
     #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc"), not(feature = "use-hidg")))]
     #[inline]
@@ -447,73 +433,19 @@ impl InputEmulator {
         Ok(())
     }
 
-    #[cfg(feature = "use-tfc")]
-    #[inline]
-    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.ctx.mouse_move_rel(x, 0))?;
-        Ok(())
-    }
-
-    #[cfg(feature = "use-tfc")]
-    #[inline]
-    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.ctx.mouse_move_rel(0, -y))?;
-        Ok(())
-    }
-
-    #[cfg(feature = "use-tfc")]
-    #[inline]
-    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.ctx.mouse_move_rel(x, -y))?;
-        Ok(())
-    }
-
-    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
-    #[inline]
-    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
-        Ok(())
-    }
-
-    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
-    #[inline]
-    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.enigo.move_mouse(0, y, Coordinate::Rel))?;
-        Ok(())
-    }
-
-    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
-    #[inline]
-    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
-        Ok(())
-    }
-
-    #[cfg(feature = "use-tfc")]
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc"), not(feature = "use-hidg")))]
     #[inline]
     pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.ctx.mouse_scroll(value, 0))?;
+        // exec_or_eyre!(self.virtual_mouse.scroll_x(value))?;
+        exec_or_eyre!(self.virtual_device.scroll_x(value))?;
         Ok(())
     }
 
-    #[cfg(feature = "use-tfc")]
+    #[cfg(all(target_os = "linux", not(feature = "enigo-always"), not(feature = "use-tfc"), not(feature = "use-hidg")))]
     #[inline]
     pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.ctx.mouse_scroll(0, -value))?;
-        Ok(())
-    }
-
-    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
-    #[inline]
-    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
-        Ok(())
-    }
-
-    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
-    #[inline]
-    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
-        exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
+        // exec_or_eyre!(self.virtual_mouse.scroll_y(value))?;
+        exec_or_eyre!(self.virtual_device.scroll_y(value))?;
         Ok(())
     }
 
@@ -547,6 +479,43 @@ impl InputEmulator {
         Ok(())
     }
 
+    // TFC
+
+    #[cfg(feature = "use-tfc")]
+    #[inline]
+    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.ctx.mouse_move_rel(x, 0))?;
+        Ok(())
+    }
+
+    #[cfg(feature = "use-tfc")]
+    #[inline]
+    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.ctx.mouse_move_rel(0, -y))?;
+        Ok(())
+    }
+
+    #[cfg(feature = "use-tfc")]
+    #[inline]
+    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.ctx.mouse_move_rel(x, -y))?;
+        Ok(())
+    }
+
+    #[cfg(feature = "use-tfc")]
+    #[inline]
+    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.ctx.mouse_scroll(value, 0))?;
+        Ok(())
+    }
+
+    #[cfg(feature = "use-tfc")]
+    #[inline]
+    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.ctx.mouse_scroll(0, -value))?;
+        Ok(())
+    }
+
     #[cfg(feature = "use-tfc")]
     #[inline]
     pub fn press(&mut self, key_code: KeyCode) -> Result<()> {
@@ -574,6 +543,43 @@ impl InputEmulator {
                 exec_or_eyre!(self.ctx.key_up(button))?;
             }
         };
+        Ok(())
+    }
+
+    // enigo
+
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
+    #[inline]
+    pub fn move_mouse_x(&mut self, x: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.move_mouse(x, 0, Coordinate::Rel))?;
+        Ok(())
+    }
+
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
+    #[inline]
+    pub fn move_mouse_y(&mut self, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.move_mouse(0, y, Coordinate::Rel))?;
+        Ok(())
+    }
+
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
+    #[inline]
+    pub fn move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.move_mouse(x, y, Coordinate::Rel))?;
+        Ok(())
+    }
+
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
+    #[inline]
+    pub fn scroll_x(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Horizontal))?;
+        Ok(())
+    }
+
+    #[cfg(all(not(feature = "use-tfc"), any(target_os = "windows", all(target_os = "linux", feature = "enigo-always"))))]
+    #[inline]
+    pub fn scroll_y(&mut self, value: OS_Input_Coord) -> Result<()> {
+        exec_or_eyre!(self.enigo.scroll(value, Axis::Vertical))?;
         Ok(())
     }
 
@@ -606,4 +612,8 @@ impl InputEmulator {
         };
         Ok(())
     }
+
+    //hidg
+
+
 }
