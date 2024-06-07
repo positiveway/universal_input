@@ -75,23 +75,23 @@ impl InputEmulator {
         vec![]
     }
 
-    // #[cfg(not(feature = "use-mki"))]
-    // #[inline]
-    // pub fn gradual_move_mouse_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-    //     let gradual_move = GradualMove::calculate(x, y);
-    //
-    //     for _ in 0..gradual_move.both_move {
-    //         self.move_mouse(gradual_move.x_direction, gradual_move.y_direction)?;
-    //     }
-    //     for _ in 0..gradual_move.move_only_x {
-    //         self.move_mouse_x(gradual_move.x_direction)?;
-    //     }
-    //     for _ in 0..gradual_move.move_only_y {
-    //         self.move_mouse_y(gradual_move.y_direction)?;
-    //     }
-    //
-    //     Ok(())
-    // }
+    #[cfg(not(feature = "use-mki"))]
+    #[inline]
+    pub fn gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        let gradual_move = GradualMove::calculate(x, y);
+
+        for _ in 0..gradual_move.both_move {
+            self.move_mouse(gradual_move.x_direction, gradual_move.y_direction)?;
+        }
+        for _ in 0..gradual_move.move_only_x {
+            self.move_mouse_x(gradual_move.x_direction)?;
+        }
+        for _ in 0..gradual_move.move_only_y {
+            self.move_mouse_y(gradual_move.y_direction)?;
+        }
+
+        Ok(())
+    }
 
     #[cfg(not(feature = "use-mki"))]
     #[inline]
@@ -111,12 +111,6 @@ impl InputEmulator {
         self.finish_operation_mouse()?;
 
         Ok(())
-    }
-
-    #[cfg(not(feature = "use-mki"))]
-    #[inline]
-    pub fn gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        self.gradual_move_mouse_raw(x, y)
     }
 
     // #[cfg(all(not(feature = "use-mki"), not(feature = "use-hidg")))]
@@ -154,24 +148,24 @@ impl InputEmulator {
         vec![]
     }
 
-    // #[cfg(not(feature = "use-mki"))]
-    // #[inline]
-    // pub fn gradual_scroll_raw(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-    //     let gradual_scroll = GradualMove::calculate(x, y);
-    //
-    //     for _ in 0..gradual_scroll.both_move {
-    //         self.scroll_x(gradual_scroll.x_direction)?;
-    //         self.scroll_y(gradual_scroll.y_direction)?;
-    //     }
-    //     for _ in 0..gradual_scroll.move_only_x {
-    //         self.scroll_x(gradual_scroll.x_direction)?;
-    //     }
-    //     for _ in 0..gradual_scroll.move_only_y {
-    //         self.scroll_y(gradual_scroll.y_direction)?;
-    //     }
-    //
-    //     Ok(())
-    // }
+    #[cfg(not(feature = "use-mki"))]
+    #[inline]
+    pub fn gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
+        let gradual_scroll = GradualMove::calculate(x, y);
+
+        for _ in 0..gradual_scroll.both_move {
+            self.scroll_x(gradual_scroll.x_direction)?;
+            self.scroll_y(gradual_scroll.y_direction)?;
+        }
+        for _ in 0..gradual_scroll.move_only_x {
+            self.scroll_x(gradual_scroll.x_direction)?;
+        }
+        for _ in 0..gradual_scroll.move_only_y {
+            self.scroll_y(gradual_scroll.y_direction)?;
+        }
+
+        Ok(())
+    }
 
     #[cfg(not(feature = "use-mki"))]
     #[inline]
@@ -192,12 +186,6 @@ impl InputEmulator {
         self.finish_operation_mouse()?;
 
         Ok(())
-    }
-
-    #[cfg(not(feature = "use-mki"))]
-    #[inline]
-    pub fn gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        self.gradual_scroll_raw(x, y)
     }
 
     #[cfg(not(feature = "use-mki"))]

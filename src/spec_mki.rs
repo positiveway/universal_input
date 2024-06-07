@@ -145,7 +145,13 @@ impl InputEmulator {
 
     #[inline]
     pub fn gradual_move_mouse(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        self.gradual_move_mouse_raw(x, y)
+        #[cfg(not(feature = "mki-separate"))]{
+            exec_or_eyre!(self.virtual_device.gradual_move_mouse(x, y))?;
+        }
+        #[cfg(feature = "mki-separate")]{
+            exec_or_eyre!(self.virtual_mouse.gradual_move_mouse(x, y))?;
+        }
+        Ok(())
     }
 
     #[inline]
@@ -213,7 +219,13 @@ impl InputEmulator {
 
     #[inline]
     pub fn gradual_scroll(&mut self, x: OS_Input_Coord, y: OS_Input_Coord) -> Result<()> {
-        self.gradual_scroll_raw(x, y)
+        #[cfg(not(feature = "mki-separate"))]{
+            exec_or_eyre!(self.virtual_device.gradual_scroll(x, y))?;
+        }
+        #[cfg(feature = "mki-separate")]{
+            exec_or_eyre!(self.virtual_mouse.gradual_scroll(x, y))?;
+        }
+        Ok(())
     }
 
     #[inline]
