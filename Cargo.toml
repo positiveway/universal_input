@@ -5,6 +5,7 @@ edition = "2021"
 
 [features]
 use-mki = []
+mki-separate = []
 use-hidg = ["dep:hidg"]
 use-enigo = ["dep:enigo"]
 use-tfc = ["dep:tfc"]
